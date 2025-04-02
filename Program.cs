@@ -1,4 +1,4 @@
-﻿using ListLab;
+using ListLab;
 
 public class Program
 {
@@ -64,6 +64,51 @@ public class Program
         }
         Console.WriteLine(lst1);
 
+        Console.WriteLine("The size is: "+LengthList(lst1));
+
+        Console.WriteLine("Result: "+ IsPefectList(lst1));
+
     }
 
+
+
+
+
+    public static int LengthList(Node<int> first)
+    {
+        int count = 0;
+        Node<int> pos = first;
+        while (first != null)
+        {
+            pos = first.GetNext();
+            count++;
+        }
+        return count;
+    }
+
+    public static bool IsPefectList(Node<int> first)
+    {
+        Node<int> pos = first;
+        Node<int> lastNode = first;
+
+        for (int i = 0; i < LengthList(first) / 2; i++)
+        {
+            lastNode = lastNode.GetNext();
+        }
+        for(int i = 0; i < LengthList(lastNode) / 2; i++)
+        {
+            for(int j = 0; j < LengthList(lastNode) /2; j++)
+            {
+                if(lastNode.GetValue() >= first.GetValue())
+                {
+                    return false;
+                }
+                lastNode = lastNode.GetNext();
+                pos = pos.GetNext();
+
+            }
+        }
+
+        return true;
+    }
 }
