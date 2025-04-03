@@ -1,114 +1,195 @@
+using BagrutListLab;
 using ListLab;
+using System.Collections.Generic;
 
 public class Program
 {
     private static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
-        Node<int> lst = new Node<int>(5);//יצירת חוליה ראשונה ששם הרשימה מצביע עליה
-                                         //null בעת היצירה החוליה היחידה מצביעה על
-        Console.WriteLine(lst);
-        Node<int> currNode = new Node<int>(7, lst);//יצירת חוליה נוספת, שמוצבת לפני ליסט ומצביעה
-                                                   //על החוליה הראשונה של ליסט
-        lst = currNode;//גורמים למצביע ליסט להצביע על החוליה שהוספנו בתחילת הרשימה
-        Console.WriteLine(lst);
-        currNode = new Node<int>(9, lst);
-        lst = currNode;
-        currNode = new Node<int>(-2, lst);
-        lst = currNode;
-        currNode = new Node<int>(10, lst);
-        lst = currNode;
-        currNode = new Node<int>(22, lst);
-        lst = currNode;
-        currNode = new Node<int>(1, lst);
-        lst = currNode;
-        currNode = new Node<int>(-1, lst);
-        lst = currNode;
-        currNode = new Node<int>(-9, lst);
-        lst = currNode;
-        lst = new Node<int>(-55, lst);//צורת כתיבה שמאפשרת להוסיף חוליה בראש שרשרת החוליות ולהעביר אתיה את מצביע ראש הרשימה
-        Console.WriteLine(lst);
-
-        Console.WriteLine(lst.GetValue());//הדפסת הערך של החוליה הראשונה ברשימה
-
-        Console.WriteLine(lst.GetNext().GetValue());//הדפסת הערך של החוליה השנייה ברשימה
-
-        currNode = lst.GetNext();//הצבעה על החוליה השניה בשרשרת החוליות
-
-        currNode = currNode.GetNext();//קידום ההצבעה של החוליות הנוכחית באחת
-
-        //שילוב חוליה חדשה בשרשרת אחרי חוליה נתונה
-        //נהנה למשל שרשרת חוליות מסודרת בסדר עולה
-        Node<int> lst1 = new Node<int>(10);// 10-->null
-        lst1 = new Node<int>(8, lst1);// 8-->10-->null
-        lst1 = new Node<int>(6, lst1);// 6-->8-->10-->null
-        lst1 = new Node<int>(4, lst1);// 4-->6-->8-->10-->null
+        Node<int> lst1 = new Node<int>(10);
+        Node<int> currNode= new Node<int>(9,lst1);
+        lst1 = currNode;
+        currNode= new(8,lst1);
+        lst1 = currNode;
+        currNode = new(6,lst1);
+        lst1 = currNode;
+        currNode = new(5,lst1);
+        lst1 = currNode;
+        currNode = new(4,lst1);
+        lst1 = currNode;
+        currNode = new(3,lst1);
+        lst1 = currNode;
+        currNode = new(2,lst1);
+        lst1 = currNode;
+        Console.WriteLine("sum is:"+SumLinked(lst1));
+        Console.WriteLine("amount of evens:"+ EvenInList(lst1));
+        InsertSortedList(lst1,7);
+        lst1 = new(1, lst1);
         Console.WriteLine(lst1);
+        Console.WriteLine("size is: "+ SizeLst(lst1));
+        Console.WriteLine("is it perf: "+CheckPerfLst(lst1));
 
-        //ניצור חולייה חדשה ונכניס אותה לשרשרת לפי ערך המספר
-        Node<int> NewNode = new Node<int>(12);// 7-->null
-        currNode = lst1;//הצבעה על החוליה הראשונה בשרשרת
-        if (currNode.GetValue() > NewNode.GetValue())
+
+        Ranges r1 = new Ranges(1,9);
+        Ranges r2 = new Ranges(20, 22);
+        Ranges r3 = new Ranges(30, 69);
+        Ranges r4 = new Ranges(76, 99);
+        Node<BagrutListLab.Ranges> lst3 = new(r4);
+        lst3 = new(r3,lst3);
+        lst3 = new(r2,lst3);
+        lst3 = new(r1,lst3);
+        Console.WriteLine(lst3);
+        Console.WriteLine(IsInRange(lst3, 1000));
+
+        Console.WriteLine("The new list is: "+ CreateRangeForNumber(lst3,70));
+
+    }
+    public static int SumLinked(Node<int> first)
+    {
+        Node<int> pos = first;
+        int sum = 0;
+        while (pos != null)
         {
-            NewNode.SetNext(lst1);//הצבת החוליה החדשה לפני החוליה הראשונה בשרשרת
-            lst1 = NewNode;//ההצבת שם השרשרת על המספר החדש שנוסף בראשה
+            sum += pos.GetValue();
+            pos = pos.GetNext();
         }
-        else
+        return sum;
+    }
+    public static int EvenInList(Node<int> first)
+    {
+        Node<int> pos = first;
+        int evens = 0;
+        while (pos != null)
         {
-            while (currNode.HasNext() && currNode.GetNext().GetValue() < NewNode.GetValue())
+            if (pos.GetValue() % 2 == 0)
             {
-                currNode = currNode.GetNext();//כל עוד יש חוליה עוקבת והערך שלה קטן מהחוליה החדשה מתקדמים חוליה
+                evens++;
             }
-            NewNode.SetNext(currNode.GetNext());//הצבת החוליה החדשה לפני החוליה העוקבת את הנוכחית
-            currNode.SetNext(NewNode);//הצבת החוליה החדשה אחרי החוליה הנוכחית        
+            pos = pos.GetNext();
         }
-        Console.WriteLine(lst1);
-
-        Console.WriteLine("The size is: "+LengthList(lst1));
-
-        Console.WriteLine("Result: "+ IsPefectList(lst1));
-
+        return evens;
     }
-
-
-
-
-
-    public static int LengthList(Node<int> first)
-    {
-        int count = 0;
-        Node<int> pos = first;
-        while (first != null)
-        {
-            pos = first.GetNext();
-            count++;
-        }
-        return count;
-    }
-
-    public static bool IsPefectList(Node<int> first)
+    public static int BiggestInList (Node<int> first)
     {
         Node<int> pos = first;
-        Node<int> lastNode = first;
-
-        for (int i = 0; i < LengthList(first) / 2; i++)
+        int biggest=pos.GetValue();
+        while (pos != null)
         {
-            lastNode = lastNode.GetNext();
-        }
-        for(int i = 0; i < LengthList(lastNode) / 2; i++)
-        {
-            for(int j = 0; j < LengthList(lastNode) /2; j++)
+            if (pos.GetValue() > biggest)
             {
-                if(lastNode.GetValue() >= first.GetValue())
+                biggest = pos.GetValue();
+            }
+            pos = pos.GetNext();
+        }
+        return biggest;
+
+    }
+    public static void InsertSortedList(Node<int> first,int hadash)
+    {
+        Node<int> pos= first;
+        Node<int> insert = new(hadash);
+        while (pos.GetNext().GetValue() < insert.GetValue())
+        {
+            pos = pos.GetNext();
+        }
+        insert.SetNext(pos.GetNext());
+        pos.SetNext(insert);
+    }
+    public static int SizeLst(Node<int> first)
+    {
+        Node<int> pos = first;
+        int size = 0;
+        while (pos != null)
+        {
+            size++;
+            pos = pos.GetNext();
+        }
+        return size;
+    }
+    public static bool CheckPerfLst(Node<int> first)
+    {
+        Node<int> last = first;
+        Node<int> pos = first;
+        for(int i = 0;i<SizeLst(first)/2; i++)
+        {
+            last = last.GetNext();
+        }
+        for (int i = 0; i<SizeLst(last)/2; i++)
+        {
+            for(int j = 0; j<SizeLst(last)/2; j++)
+            {
+                if(last.GetValue() < pos.GetValue())
                 {
                     return false;
                 }
-                lastNode = lastNode.GetNext();
                 pos = pos.GetNext();
-
             }
+            last = last.GetNext();
+            pos = first;
         }
-
         return true;
     }
+
+    public static bool IsInRange(Node<BagrutListLab.Ranges> first, int number)
+    {
+        Node<BagrutListLab.Ranges> pos = first;
+        while(pos != null)
+        {
+            if(pos.GetValue().GetHigh() >= number && pos.GetValue().GetLow() <= number)
+            {
+                return true;
+            }
+
+            pos = pos.GetNext();
+        }
+
+        return false;
+    }
+
+    public static Node<BagrutListLab.Ranges> CreateRangeForNumber(Node<BagrutListLab.Ranges> first, int number)
+    {
+        Node<BagrutListLab.Ranges> pos = first;
+        while (number > pos.GetNext().GetValue().GetHigh())
+        {
+            pos = pos.GetNext();
+            if (pos.HasNext())
+            {
+                break;
+            }
+        }
+        int uppernum;
+        if(pos.HasNext() && pos.GetNext().GetValue().GetLow() > number +5)
+        {
+            uppernum = number + 5;
+        }
+        else if(pos.HasNext() && pos.GetNext().GetValue().GetLow() <= number + 5)
+        {
+            uppernum = pos.GetNext().GetValue().GetHigh() -1 ;
+        }
+        else
+        {
+            uppernum = number - 5;
+        }
+
+        int lowerNum;
+        if (pos.HasNext() && pos.GetValue().GetHigh() < number - 5)
+        {
+            lowerNum = number - 5;
+        }
+        else if (pos.HasNext() && pos.GetValue().GetHigh() >= number - 5)
+        {
+            lowerNum = pos.GetValue().GetHigh() +1;
+        }
+        else
+        {
+            lowerNum = number - 5;
+        }
+        
+        Ranges r = new(lowerNum, uppernum);
+        Node<BagrutListLab.Ranges> newR = new(r, pos.GetNext());
+        pos.SetNext(newR);
+
+        return pos;
+    }
+
 }
