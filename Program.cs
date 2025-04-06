@@ -41,7 +41,21 @@ public class Program
         Console.WriteLine(lst3);
         Console.WriteLine(IsInRange(lst3, 1000));
 
-        Console.WriteLine("The new list is: "+ CreateRangeForNumber(lst3,70));
+        Console.WriteLine("The new list is: "+ CreateRangeForNumber(lst3,23));
+
+
+        Student s1 = new Student(30, "Lior");
+        Student s2 = new Student(80, "Mark");
+        Student s3 = new Student(95, "Harel");
+        Student s4 = new Student(100, "Shlomi");
+        Student s5 = new Student(77, "yahin");
+        Node<Student> lst4 = new(s4);
+        lst4 = new(s3, lst4);
+        lst4= new(s2, lst4);
+        lst4 = new(s1, lst4);
+
+        Node<Student> newStud = new(s5);
+        Console.WriteLine("The new list is: " + InsertNodeStud(lst4, newStud));
 
     }
     public static int SumLinked(Node<int> first)
@@ -190,6 +204,26 @@ public class Program
         pos.SetNext(newR);
 
         return pos;
+    }
+
+
+    public static Node<Student> InsertNodeStud(Node<Student> first, Node<Student> newNode)
+    {
+        if(first == null || first.GetValue().GetGrade() > newNode.GetValue().GetGrade())
+        {
+            newNode.SetNext(first);
+            return newNode;
+        }
+        Node<Student> currNode = first;
+        while(currNode.HasNext() && currNode.GetNext().GetValue().GetGrade() < newNode.GetValue().GetGrade())
+        {
+            currNode = currNode.GetNext();
+        }
+
+        newNode.SetNext(currNode.GetNext());
+        currNode.SetNext(newNode);
+        return first;
+
     }
 
 }
