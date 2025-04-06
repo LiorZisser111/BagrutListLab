@@ -1,4 +1,4 @@
-using BagrutListLab;
+﻿using BagrutListLab;
 using ListLab;
 using System.Collections.Generic;
 
@@ -41,7 +41,58 @@ public class Program
         Console.WriteLine(lst3);
         Console.WriteLine(IsInRange(lst3, 1000));
 
-        Console.WriteLine("The new list is: "+ CreateRangeForNumber(lst3,70));
+        Console.WriteLine("The new list is: "+ CreateRangeForNumber(lst3,23));
+
+
+        //homeword for passover:
+        Console.WriteLine("\n------------HomeWork for passover------------");
+        //ex1:
+        Student s1 = new Student(85, "Noa");
+        Student s2 = new Student(92, "Lior");
+        Student s3 = new Student(76, "Maya");
+
+        Node<Student> list = new Node<Student>(s3);
+        list = new Node<Student>(s2, list);
+        list = new Node<Student>(s1, list);
+
+        Console.WriteLine("\nThe memoza: "+ MemozaStud(list));
+
+        //ex2:
+        Student s4 = new Student(30, "Lior");
+        Student s5 = new Student(80, "Mark");
+        Student s6 = new Student(95, "Harel");
+        Student s7 = new Student(100, "Shlomi");
+        Student s8 = new Student(77, "yahin");
+        Node<Student> lst4 = new(s7);
+        lst4 = new(s6, lst4);
+        lst4= new(s5, lst4);
+        lst4 = new(s4, lst4);
+
+        Node<Student> newStud = new(s8);
+        Console.WriteLine("\nThe new list is: " + InsertNodeStud(lst4, newStud));
+
+
+
+
+        //ex3:
+        Group g1 = new Group(1);
+        g1.AddStudent("David");
+        g1.AddStudent("Noa");
+        g1.AddStudent("Lior");
+
+        Group g2 = new Group(2);
+        g2.AddStudent("David");
+        g2.AddStudent("Lior");
+        g2.AddStudent("Sara");
+
+        Group g3 = new Group(3);
+        g3.AddStudent("David");
+        g3.AddStudent("Lior");
+        g3.AddStudent("Maya");
+        Group[] groupArr = new Group[] { g1, g2, g3 };
+        Console.WriteLine("\nNames that appear on all lists:");
+        Node<string> commonNames = AllGroups(groupArr);
+        Console.WriteLine(commonNames);
 
     }
     public static int SumLinked(Node<int> first)
@@ -191,5 +242,85 @@ public class Program
 
         return pos;
     }
+
+
+
+
+    // homework for passover:
+
+
+
+    public static Node<Student> InsertNodeStud(Node<Student> first, Node<Student> newNode)
+    {
+        if(first == null || first.GetValue().GetGrade() > newNode.GetValue().GetGrade())
+        {
+            newNode.SetNext(first);
+            return newNode;
+        }
+        Node<Student> currNode = first;
+        while(currNode.HasNext() && currNode.GetNext().GetValue().GetGrade() < newNode.GetValue().GetGrade())
+        {
+            currNode = currNode.GetNext();
+        }
+
+        newNode.SetNext(currNode.GetNext());
+        currNode.SetNext(newNode);
+        return first;
+
+    }
+
+
+    public static double MemozaStud(Node<Student> lst)
+    {
+        int sum = 0;
+        int countOfStud = 0;
+        Node<Student> pos = lst;
+        while (pos != null)
+        {
+            sum += pos.GetValue().GetGrade();
+            pos = pos.GetNext();
+            countOfStud++;
+        }
+        int memoza = sum/countOfStud;
+        return memoza;
+    }
+
+
+    public static bool IsInList(Node<string> lst, string name)
+    {
+        Node<string> pos = lst;
+        while (pos != null)
+        {
+            if(pos.GetValue() == name)
+            {
+                return true;
+            }
+            pos = pos.GetNext();
+        }
+        return false;
+    }
+
+    public static Node<string> AllGroups(Group[] groupArr)
+    {
+        Node<string> commonNames = null;
+
+        Group firstGroup = groupArr[0];
+        for (int i = 0; i < firstGroup.GetKamut(); i++)
+        {
+            string name = firstGroup.GetNamesArr()[i];
+            bool isInAll = true;
+            for (int j = 1; j < groupArr.Length && isInAll; j++)
+            {
+                if (!groupArr[j].IsIncluded(name))
+                    isInAll = false;
+            }
+            if (isInAll && !IsInList(commonNames, name))
+            {
+                commonNames = new Node<string>(name, commonNames);
+            }
+        }
+        return commonNames;
+    }
+
 
 }
