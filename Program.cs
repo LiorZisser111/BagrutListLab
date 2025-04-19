@@ -1,4 +1,4 @@
-﻿using BagrutListLab;
+using BagrutListLab;
 using ListLab;
 using System.Collections.Generic;
 
@@ -248,8 +248,23 @@ public class Program
 
     // homework for passover:
 
+    //ex1:
+    public static double MemozaStud(Node<Student> lst)
+    {
+        int sum = 0;
+        int countOfStud = 0;
+        Node<Student> pos = lst;
+        while (pos != null)
+        {
+            sum += pos.GetValue().GetGrade();
+            pos = pos.GetNext();
+            countOfStud++;
+        }
+        int memoza = sum / countOfStud;
+        return memoza;
+    }
 
-
+    //ex2:
     public static Node<Student> InsertNodeStud(Node<Student> first, Node<Student> newNode)
     {
         if(first == null || first.GetValue().GetGrade() > newNode.GetValue().GetGrade())
@@ -269,23 +284,7 @@ public class Program
 
     }
 
-
-    public static double MemozaStud(Node<Student> lst)
-    {
-        int sum = 0;
-        int countOfStud = 0;
-        Node<Student> pos = lst;
-        while (pos != null)
-        {
-            sum += pos.GetValue().GetGrade();
-            pos = pos.GetNext();
-            countOfStud++;
-        }
-        int memoza = sum/countOfStud;
-        return memoza;
-    }
-
-
+    //ex3:
     public static bool IsInList(Node<string> lst, string name)
     {
         Node<string> pos = lst;
