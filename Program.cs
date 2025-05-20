@@ -95,6 +95,81 @@ public class Program
         Console.WriteLine(commonNames);
 
     }
+
+
+
+        //--------תיקון מבחן-------------
+
+
+
+
+    public static Node<int> OrderList(Node<int> lst)
+    {
+        // הפונקציה מקבלת רשימה עם מספרים לא מסודרים וחוזרים על עצמם
+        // מחזירה רשימה חדשה עם סדר עולה של המספרים ללא כפילויות
+        Node<int> sortedNode = null;
+        int currItem = lst.GetValue();
+
+        sortedNode = new Node<int>(currItem, sortedNode);
+        Node<int> lst1 = null;
+        while (lst.HasNext())
+        {
+            lst = lst.GetNext();
+            lst1 = new Node<int>(lst.GetValue());
+            sortedNode = SortedList(sortedNode, lst1);
+        }
+        return sortedNode;
+    }
+    public static Node<int> SortedList(Node<int> lst1, Node<int> temp)
+    {
+    // פונקצייה עזר לפונקציה הקודמת
+    // מוסיפה לרשימה הקיימת חוליות לפי הסדר עולה
+        Node<int> currNode = lst1;
+        if (currNode.GetValue() >= temp.GetValue())
+        {
+            temp.SetNext(lst1);
+            lst1 = temp;
+        }
+        else
+        {
+            while (currNode.HasNext() && currNode.GetNext().GetValue() < temp.GetValue())
+            {
+                currNode = currNode.GetNext();
+            }
+            temp.SetNext(currNode.GetNext());
+        }
+        return lst1;
+    }
+
+    public static Node<int> SomeF1(Node<int> lst)
+    {
+        //מקבלת רשימה מבולגנת ומחזירה את הרשימה ללא כפילויות
+        Node<int> curr = lst;
+        if (!curr.HasNext()) return curr;
+        Node<int> clean = SomeF1(curr.GetNext());
+        if (curr.GetValue() == clean.GetValue())
+            return clean;
+        curr.SetNext(clean);
+        return curr;
+    }
+
+    public static int someF2(Node<int> lst)
+    {
+        // מחזיר את ערך הצומת הנוכחי ועוד פי 10 הקריאה הרקורסיבית לצומת הבא
+
+        Node<int> curr = lst;
+        if(!curr.HasNext())
+        {
+            return curr.GetValue();
+        }
+        else
+        {
+            return lst.GetValue() + someF2(curr.GetNext()) * 10;
+        }
+    }
+
+
+    
     public static int SumLinked(Node<int> first)
     {
         Node<int> pos = first;
@@ -248,23 +323,8 @@ public class Program
 
     // homework for passover:
 
-    //ex1:
-    public static double MemozaStud(Node<Student> lst)
-    {
-        int sum = 0;
-        int countOfStud = 0;
-        Node<Student> pos = lst;
-        while (pos != null)
-        {
-            sum += pos.GetValue().GetGrade();
-            pos = pos.GetNext();
-            countOfStud++;
-        }
-        int memoza = sum / countOfStud;
-        return memoza;
-    }
 
-    //ex2:
+
     public static Node<Student> InsertNodeStud(Node<Student> first, Node<Student> newNode)
     {
         if(first == null || first.GetValue().GetGrade() > newNode.GetValue().GetGrade())
@@ -284,7 +344,23 @@ public class Program
 
     }
 
-    //ex3:
+
+    public static double MemozaStud(Node<Student> lst)
+    {
+        int sum = 0;
+        int countOfStud = 0;
+        Node<Student> pos = lst;
+        while (pos != null)
+        {
+            sum += pos.GetValue().GetGrade();
+            pos = pos.GetNext();
+            countOfStud++;
+        }
+        int memoza = sum/countOfStud;
+        return memoza;
+    }
+
+
     public static bool IsInList(Node<string> lst, string name)
     {
         Node<string> pos = lst;
@@ -320,6 +396,5 @@ public class Program
         }
         return commonNames;
     }
-
 
 }
